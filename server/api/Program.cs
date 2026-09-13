@@ -1,3 +1,4 @@
+using api.Etc;
 using Infrastructure.Postgres.Scaffolding;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -5,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
+var appOptions = builder.Services.AddAppOptions(
+   builder.Configuration
+);
 builder.Services.AddDbContext<MyDbContext>(conf=>
 {
-    conf.UseNpgsql(Environment.GetEnvironmentVariable("MyConnectionString"));
+    conf.UseNpgsql(appOptions.DbConnectionString);
 });
 
 
